@@ -10,4 +10,6 @@ Symfony的[`HttpFoundation`](http://symfony.com/doc/current/components/http_foun
 
 针对`Response`进行了统一的封装处理，使原本PHP散乱的无法管理各处响应的问题得以解决，通过构建一个`Symfony\Component\HttpFoundation\Response`对象来统一管理响应数据。可以控制`响应的HTTP头`、`响应内容`、`COOKIE`等等。可以响应`html内容`、`JSON数据`、`托管静态文件`、`数据流形式响应`等等常见的给客户端响应的数据形式。
 
+你可以通过组件的官方文档来了解和使用它，你可以根据文档编写一些测试脚本来熟悉组件的用法和用途，帮助自己更好的了解组件的功能。
+
 ## HttpKernel
