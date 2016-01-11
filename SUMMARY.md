@@ -4,6 +4,6 @@
 * [核心组件](core_components.md)
 * [Big Picture](big_picture.md)
 * [应用事件系统](play_with_event_system.md)
-* 与经典MVC框架的对比
+* [与经典MVC框架的对比](a_contrastive_analysis_of_classic_mvc_and_symfony.md)
 * DIY事件驱动框架
 
