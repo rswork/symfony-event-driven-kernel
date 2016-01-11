@@ -8,6 +8,6 @@ Symfony的[`HttpFoundation`](http://symfony.com/doc/current/components/http_foun
 
 针对`Request`中的`HTTP请求头`、`URL数据`、`POST数据`、`COOKIE数据`、`SESSION据`、`文件上传`和`SERVER参数`进行了封装，可以通过`Symfony\Component\HttpFoundation\Request`类的实例化对象取得这些参数。对于[`Session`](http://symfony.com/doc/current/components/http_foundation/sessions.html)管理也同样进行了封装，统一处理。
 
-针对`Response`进行了统一的封装处理，使原本PHP散乱的无法管理各处响应的问题得以解决，通过构建一个`Symfony\Component\HttpFoundation\Response`对象来统一管理响应数据。可以控制`响应的HTTP头`、`HTTP状态码`、`响应内容`、`COOKIE`等等。可以响应`html内容`、`JSON数据`、`托管静态文件`、`数据流形式响应`等等常见的给客户端响应的数据形式。
+针对`Response`进行了统一的封装处理，使原本PHP散乱的无法管理各处响应的问题得以解决，通过构建一个`Symfony\Component\HttpFoundation\Response`对象来统一管理响应数据。可以控制`响应的HTTP头`、`响应内容`、`COOKIE`等等。可以响应`html内容`、`JSON数据`、`托管静态文件`、`数据流形式响应`等等常见的给客户端响应的数据形式。
 
 ## HttpKernel
