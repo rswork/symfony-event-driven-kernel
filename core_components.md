@@ -1,5 +1,5 @@
 # 核心组件
-了解核心的构成组件实现的功能，学习如何单独使用它们，为了解Symfony的事件核心做准备。
+了解核心的构成组件实现的功能，学习如何单独使用它们，为了解Symfony的事件核心做准备。这一章只是简短介绍各个组件的功能，你需要自己引入这些组件进行相应的学习和练。
 
 Symfony的核心由几个组件组成：HttpFoundation、HttpKernel、DependencyInjection、EventDispatcher等。这些组件实现了Symfony的事件驱动核心的大部分功能。
 
