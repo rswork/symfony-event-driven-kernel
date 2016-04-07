@@ -13,4 +13,6 @@ Symfony的[`HttpFoundation`](http://symfony.com/doc/current/components/http_foun
 针对`Response`进行了统一的封装处理，使原本PHP散乱的无法管理各处响应的问题得以解决，通过构建一个`Symfony\Component\HttpFoundation\Response`对象来统一管理响应数据。可以控制`响应的HTTP头`、`响应内容`、`COOKIE`等等。可以响应`html内容`、`JSON数据`、`托管静态文件`、`数据流形式响应`等等常见的给客户端响应的数据形式。
 
 ## HttpKernel
-[`HttpKernel`](http://symfony.com/doc/current/components/http_kernel/index.html)组件提供了一个php框架所必须的基础，它是Symfony这个全栈框架的基石，并且可以独立使用并构建自己的框架。这个组件提供了一套结构化的过程，将`Request`转换成`Response`，基于事件驱动
+[`HttpKernel`](http://symfony.com/doc/current/components/http_kernel/index.html)组件提供了一个php框架所必须的基础，它是Symfony这个全栈框架的基石，并且可以独立使用并构建自己的框架。这个组件提供了一套结构化的过程，将`Request`转换成`Response`，并且借助`EventDispatcher`组件，实现了它的事件驱动的核心，即整个结构化的过程的实现。
+
+它的核心概念是一个HTTP请求的声明周期中从`Request`到`Response`的流程的结构化处理，即[`The Workflow of a Request`](http://symfony.com/doc/current/components/http_kernel/introduction.html#the-workflow-of-a-request)。另外它具有很高的可定制性，不但可以实现全栈型的重型框架(Symfony)，又可以实现微型框架(Silex)，或者是一个专业的CMS(Drupal、eZPlatform)。
