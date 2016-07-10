@@ -1,7 +1,7 @@
 # 核心组件
 了解核心的构成组件实现的功能，学习如何单独使用它们，为了解Symfony的事件核心做准备。这一章只是简短介绍各个组件的功能，你需要自己引入这些组件进行相应的学习和练。
 
-Symfony的核心由几个组件组成：HttpFoundation、HttpKernel、DependencyInjection、EventDispatcher等。这些组件实现了Symfony的事件驱动核心的大部分功能。
+Symfony的核心由几个组件组成：HttpFoundation、HttpKernel、EventDispatcher、DependencyInjection等。这些组件实现了Symfony的事件驱动核心的大部分功能。
 
 你可以通过[组件的官方文档](http://symfony.com/doc/current/components/index.html)来了解和使用它们，你可以根据文档编写一些测试脚本来熟悉组件的用法和用途，帮助自己更好的了解组件的功能。
 
@@ -21,3 +21,8 @@ Symfony的[`HttpFoundation`](http://symfony.com/doc/current/components/http_foun
 
 ## EventDispatcher
 [`EventDispatcher`](http://symfony.com/doc/current/components/event_dispatcher/introduction.html)组件是一个让项目具有更好的扩展性但不用修改原逻辑代码的工具，降低每个组件之间的耦合度，减少硬编码调用，使组件之间的调用只需要监听相应的事件和监听事件。Symfony的核心就是定义了一系列事件，触发，其余的框架组件只需要监听这些事件，多一个组件，只是多了一个监听，Kernel的代码没修改一行。
+
+你可以在其它框架引入此组件，定义自己的流程并使用事件来组织各个模块的调用，使框架更灵活扩展，而且使流程控制代码和具体的处理逻辑分离，随时可进行模块的添加和升级。
+
+## DependencyInjection
+[`DependencyInjection`](http://symfony.com/doc/current/components/dependency_injection/introduction.html)是Symfony框架的基础，提供了统一的管理功能类实例化和调用，并且可以自动解决类与类之间的依赖关系。脱离框架它也能独立使用，因为它本身没有太多强制性的依赖。
