@@ -20,4 +20,4 @@ Symfony的[`HttpFoundation`](http://symfony.com/doc/current/components/http_foun
 它定义了一个HTTP请求的几个[`标准事件`](http://symfony.com/doc/current/components/http_kernel/introduction.html#component-http-kernel-event-table)，使框架结构清晰明了，并且给开发者提供了完善的扩展度很高的流程控制框架，带来了比MVC更自由的开发体验。
 
 ## EventDispatcher
-`EventDispatcher`组件是整个Kernel中控制流程的执行者，
+[`EventDispatcher`](http://symfony.com/doc/current/components/event_dispatcher/introduction.html)组件是一个让项目具有更好的扩展性但不用修改原逻辑代码的工具，降低每个组件之间的耦合度，减少硬编码调用，使组件之间的调用只需要监听相应的事件和监听事件。Symfony的核心就是定义了一系列事件，触发，其余的框架组件只需要监听这些事件，多一个组件，只是多了一个监听，Kernel的代码没修改一行。
