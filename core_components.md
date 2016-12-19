@@ -30,5 +30,5 @@ Symfony的[`HttpFoundation`](http://symfony.com/doc/current/components/http_foun
 
 ## DependencyInjection
 
-[`DependencyInjection`](http://symfony.com/doc/current/components/dependency_injection/introduction.html)是Symfony框架的基础，标准化和集中对象在应用程序中构造的方式。脱离框架它也能独立使用，因为它本身没有太多强制性的依赖。它
+[`DependencyInjection`](http://symfony.com/doc/current/components/dependency_injection/introduction.html)是Symfony框架的基础，标准化和集中对象在应用程序中构造的方式。脱离框架它也能独立使用，因为它本身没有太多强制性的依赖。它提供了
 
