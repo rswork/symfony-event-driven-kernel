@@ -94,7 +94,7 @@ abstract class Kernel implements KernelInterface, TerminableInterface
     ...
 }
 ```
-应用内核的handle方法只有寥寥几行，它只做了两件事，调用自己的启动方法，然后从服务容器中取出 `http_kernel` 将Request交由其接管。从这里我们看出，其实Symfony的应用内核只是一个外壳，真正接管和处理请求的另有其人
+应用内核的handle方法只有寥寥几行，它只做了两件事，调用自己的启动方法，然后从服务容器中取出 `http_kernel` 将Request交由其接管。从这里我们看出，其实Symfony的应用内核只是一个外壳，真正接管和处理请求的另有其人。
 
 ## Handle Request
 
