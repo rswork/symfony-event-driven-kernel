@@ -96,13 +96,105 @@ abstract class Kernel implements KernelInterface, TerminableInterface
     {
         return $this->container->get('http_kernel');
     }
+    ...
 }
 ```
 应用内核的handle方法只有寥寥几行，它只做了两件事，调用自己的启动方法，然后从服务容器中取出 `http_kernel` 将Request交由其接管。从这里我们看出，其实Symfony的应用内核只是一个外壳，真正接管和处理请求的另有其人。这样做有一个很明显的优势：`http_kernel`服务可以被替换，可以扩展，可以自定义应用内核使用不同的服务，而所有的所有都是从容器开始，而应用内核在这里只是起到了一个初始化和引导启动的功能。那么我们就来看看默认的`http_kernel`是如何实现的，首先需要找到这个服务的配置文件：
 
 ```xml
+// framework-bundle/Resources/config/services.xml
+
+...
+<service id="http_kernel" class="Symfony\Component\HttpKernel\HttpKernel">
+    <argument type="service" id="event_dispatcher" />
+    <argument type="service" id="controller_resolver" />
+    <argument type="service" id="request_stack" />
+    <argument type="service" id="argument_resolver" />
+</service>
+...
 
 ```
+它来自Symfony的HttpKernel组件里的HttpKernel类，这个是官方实现的一个标准内核，当我们从服务容器中取出它时，是已经实例化的一个对象，在应用内核的handle方法中，初始化之后就调用了它的handle方法，让我们来一探handle方法：
+
+```php
+// Symfony/Component/HttpKernel/HttpKernel.php
+class HttpKernel implements HttpKernelInterface, TerminableInterface
+{
+    ...
+    public function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
+    {
+        $request->headers->set('X-Php-Ob-Level', ob_get_level());
+        try {
+            return $this->handleRaw($request, $type);
+        } catch (\Exception $e) {
+            if ($e instanceof ConflictingHeadersException) {
+                $e = new BadRequestHttpException('The request headers contain conflicting information regarding the origin of this request.', $e);
+            }
+            if (false === $catch) {
+                $this->finishRequest($request, $type);
+                throw $e;
+            }
+            return $this->handleException($e, $request, $type);
+        }
+    }
+    ...
+}
+```
+
+这个方法里是真正处理请求和框架内部抛出的异常的地方，直接调用handleRaw方法，如果它抛出异常，那么对异常进行处理并返回一个特殊的Response，这段代码你会发现它的解说其实就在文档。我们一点点来看吧：
+
+```php
+// Symfony/Component/HttpKernel/HttpKernel.php
+class HttpKernel implements HttpKernelInterface, TerminableInterface
+{
+    ...
+    private function handleRaw(Request $request, $type = self::MASTER_REQUEST)
+    {
+        $this->requestStack->push($request);
+        // request
+        $event = new GetResponseEvent($this, $request, $type);
+        $this->dispatcher->dispatch(KernelEvents::REQUEST, $event);
+        if ($event->hasResponse()) {
+            return $this->filterResponse($event->getResponse(), $request, $type);
+        }
+        // load controller
+        if (false === $controller = $this->resolver->getController($request)) {
+            throw new NotFoundHttpException(sprintf('Unable to find the controller for path "%s". The route is wrongly configured.', $request->getPathInfo()));
+        }
+        $event = new FilterControllerEvent($this, $controller, $request, $type);
+        $this->dispatcher->dispatch(KernelEvents::CONTROLLER, $event);
+        $controller = $event->getController();
+        // controller arguments
+        $arguments = $this->argumentResolver->getArguments($request, $controller);
+        $event = new FilterControllerArgumentsEvent($this, $controller, $arguments, $request, $type);
+        $this->dispatcher->dispatch(KernelEvents::CONTROLLER_ARGUMENTS, $event);
+        $controller = $event->getController();
+        $arguments = $event->getArguments();
+        // call controller
+        $response = call_user_func_array($controller, $arguments);
+        // view
+        if (!$response instanceof Response) {
+            $event = new GetResponseForControllerResultEvent($this, $request, $type, $response);
+            $this->dispatcher->dispatch(KernelEvents::VIEW, $event);
+            if ($event->hasResponse()) {
+                $response = $event->getResponse();
+            }
+            if (!$response instanceof Response) {
+                $msg = sprintf('The controller must return a response (%s given).', $this->varToString($response));
+                // the user may have forgotten to return something
+                if (null === $response) {
+                    $msg .= ' Did you forget to add a return statement somewhere in your controller?';
+                }
+                throw new \LogicException($msg);
+            }
+        }
+        return $this->filterResponse($response, $request, $type);
+    }
+    ...
+}
+```
+
+
 
 ## Handle Request
 
