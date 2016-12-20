@@ -92,9 +92,17 @@ abstract class Kernel implements KernelInterface, TerminableInterface
         $this->booted = true;
     }
     ...
+    protected function getHttpKernel()
+    {
+        return $this->container->get('http_kernel');
+    }
 }
 ```
-应用内核的handle方法只有寥寥几行，它只做了两件事，调用自己的启动方法，然后从服务容器中取出 `http_kernel` 将Request交由其接管。从这里我们看出，其实Symfony的应用内核只是一个外壳，真正接管和处理请求的另有其人。
+应用内核的handle方法只有寥寥几行，它只做了两件事，调用自己的启动方法，然后从服务容器中取出 `http_kernel` 将Request交由其接管。从这里我们看出，其实Symfony的应用内核只是一个外壳，真正接管和处理请求的另有其人。这样做有一个很明显的优势：`http_kernel`服务可以被替换，可以扩展，可以自定义应用内核使用不同的服务，而所有的所有都是从容器开始，而应用内核在这里只是起到了一个初始化和引导启动的功能。那么我们就来看看默认的`http_kernel`是如何实现的，首先需要找到这个服务的配置文件：
+
+```xml
+
+```
 
 ## Handle Request
 
