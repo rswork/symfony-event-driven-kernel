@@ -1,9 +1,7 @@
 # Big Picture
-
 通过分析Symfony的源代码，梳理顶层的运行逻辑，了解Symfony的最顶层事件。
 
 ## The Front Controller
-
 ```php
 // web/app.php
 use Symfony\Component\HttpFoundation\Request;
@@ -29,7 +27,6 @@ $kernel->terminate($request, $response);
 ```
 
 ## Boot And Handle Request
-
 Symfony是从一个内核实例接管一个请求来启动的，通过创建一个继承了 `Symfony\Component\HttpKernel\Kernel` 的实例对象初始化一个Symfony应用。一个Symfony应用内核包含了一些当前运行的环境参数和注册的bundle参数以及一些其它的和应用相关的属性和方法构成，它本身不是运行具体处理请求逻辑的对象，而是一个构建运行环境的对象：bundle系统的初始化，服务容器的初始化等等。
 
 [默认的应用内核构造方法](https://github.com/symfony/symfony/blob/v3.2.1/src/Symfony/Component/HttpKernel/Kernel.php#L71)：
