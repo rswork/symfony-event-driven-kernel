@@ -221,11 +221,20 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
 5. KernelEvents::RESPONSE
 6. KernelEvents::FINISH_REQUEST
 
-最后这些流程中一旦出现异常，会被外层捕获，并触发 `KernelEvents::FINISH_REQUEST`和`KernelEvents::EXCEPTION`，最后在`Front Controller`里调用应用内核的terminate方法触发`KernelEvents::TERMINATE`。这些事件点中除了必要的逻辑分支之外，只用了两行代码，如此简短的代码便是Symfony的核心流程，你可能这时会想到，其实Symfony的文档从一开始就在灌输这种Request-Response生命周期的概念，因为它自始至终确实就是这么架构的。
+最后这些流程中一旦出现异常，会被外层捕获，并触发 `KernelEvents::FINISH_REQUEST`和`KernelEvents::EXCEPTION`，最后在`Front Controller`里调用应用内核的terminate方法触发`KernelEvents::TERMINATE`。
 
 ## Terminate
+```php
+// web/app.php
+use Symfony\Component\HttpFoundation\Request;
+...
+$response = $kernel->handle($request);
+$response->send();
+$kernel->terminate($request, $response);
+```
+最终，当我们从应用内核获得一个响应之后，直接发送它，然后结束整个应用。
 
 ## 总结
-
+这些事件点中除了必要的逻辑分支之外，只用了两行代码，如此简短的代码便是Symfony的核心流程，你可能这时会想到，其实Symfony的文档[从一开始](http://symfony.com/doc/current/introduction/http_fundamentals.html)就在灌输这种Request-Response生命周期的概念，因为它自始至终确实就是这么架构的。
 
 
