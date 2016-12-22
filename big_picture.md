@@ -237,4 +237,4 @@ $kernel->terminate($request, $response);
 ## 总结
 这些事件点中除了必要的逻辑分支之外，只用了两行代码，如此简短的代码便是Symfony的核心流程，你可能这时会想到，其实Symfony的文档[从一开始](http://symfony.com/doc/current/introduction/http_fundamentals.html)就在灌输这种Request-Response生命周期的概念，因为它自始至终确实就是这么架构的。
 
-这里用了很
+Symfony用事件机制代替了硬编码的回调调用，而基于事件化整个框架，为Web开发添加了更灵活的架构方式，让程序更容易扩展，而且它提供了一个很棒的思路：**业务逻辑为何不以同样的思想来组织呢？**
