@@ -28,7 +28,7 @@ $kernel->terminate($request, $response);
 5. 内核结束一次“请求-响应”
 ```
 
-## Boot
+## Boot And Handle Request
 
 Symfony是从一个内核实例接管一个请求来启动的，通过创建一个继承了 `Symfony\Component\HttpKernel\Kernel` 的实例对象初始化一个Symfony应用。一个Symfony应用内核包含了一些当前运行的环境参数和注册的bundle参数以及一些其它的和应用相关的属性和方法构成，它本身不是运行具体处理请求逻辑的对象，而是一个构建运行环境的对象：bundle系统的初始化，服务容器的初始化等等。
 
@@ -220,10 +220,8 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
 4. KernelEvents::VIEW
 5. KernelEvents::RESPONSE
 6. KernelEvents::FINISH_REQUEST
-7. 
 
-
-## Handle Request
+最后这些流程中一旦出现异常，会被外层捕获，并触发 `KernelEvents::FINISH_REQUEST`和`KernelEvents::EXCEPTION`，最后在`Front Controller`里调用应用内核的terminate方法触发`KernelEvents::TERMINATE`。这些事件点中除了必要的逻辑分支之外，只用了两行代码，如此简短的代码便是Symfony的核心流程，你可能这时会想到，其实Symfony的文档从一开始就在灌输这种Request-Response生命周期的概念，因为它自始至终确实就是这么架构的。
 
 ## Terminate
 
