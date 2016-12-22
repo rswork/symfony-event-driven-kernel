@@ -191,9 +191,36 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
         return $this->filterResponse($response, $request, $type);
     }
     ...
+    private function filterResponse(Response $response, Request $request, $type)
+    {
+        $event = new FilterResponseEvent($this, $request, $type, $response);
+        $this->dispatcher->dispatch(KernelEvents::RESPONSE, $event);
+        $this->finishRequest($request, $type);
+        return $event->getResponse();
+    }
+    ...
+    private function finishRequest(Request $request, $type)
+    {
+        $this->dispatcher->dispatch(KernelEvents::FINISH_REQUEST, new FinishRequestEvent($this, $request, $type));
+        $this->requestStack->pop();
+    }
+    ...
 }
 ```
 
+从代码中不难看出，这里的实现和文档中的图例讲解一模一样：
+
+![](/assets/01-workflow.png)
+
+图中的Workflow便是此段代码的图示，其中的每个方块是一个事件
+
+1. KernelEvents::REQUEST
+2. KernelEvents::CONTROLLER
+3. KernelEvents::CONTROLLER_ARGUMENTS
+4. KernelEvents::VIEW
+5. KernelEvents::RESPONSE
+6. KernelEvents::FINISH_REQUEST
+7. 
 
 
 ## Handle Request
